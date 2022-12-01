@@ -1,9 +1,12 @@
+import api.client.CreateUserAPI;
+import api.user.UserGenerator;
 import io.qameta.allure.junit4.DisplayName;
 import io.restassured.response.ValidatableResponse;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import api.user.User;
 
 import static org.apache.http.HttpStatus.*;
 
@@ -20,7 +23,7 @@ public class CreateUserTest {
     }
 
     @After
-    public void setDown(){
+    public void setDown() {
         createUser.deleteUser(accessToken);
     }
 
@@ -38,20 +41,17 @@ public class CreateUserTest {
         String actualUser = responseCreateUser.extract().path("user").toString();
         Assert.assertEquals(expectedSuccess, actualSuccess);
         Assert.assertEquals(expectedUser, actualUser);
-
-//        ValidatableResponse responseLoginUser = createUser.loginUser(Credentials.from(user));
-//        accessToken = responseLoginUser.extract().path("accessToken").toString();
     }
 
     @Test
     @DisplayName("Проверка - создания пользователя, который уже зарегистрирован")
-    public void userCanBeCreatedIsAlreadyRegistered(){
+    public void userCanBeCreatedIsAlreadyRegistered() {
         ValidatableResponse responseCreateUser = createUser.сreateUser(user);
         accessToken = responseCreateUser.extract().path("accessToken").toString();
 
         responseCreateUser =
                 createUser.сreateUser(user)
-                .assertThat().statusCode(SC_FORBIDDEN);
+                        .assertThat().statusCode(SC_FORBIDDEN);
 
         String expectedSuccess = "false";
         String actualSuccess = responseCreateUser.extract().path("success").toString();
@@ -63,11 +63,12 @@ public class CreateUserTest {
 
     @Test
     @DisplayName("Проверка - создание пользователя и не заполнить одно из обязательных полей например пароль")
-    public void userCanBeCreatedLeaveOneRequiredFields(){
+    public void userCanBeCreatedLeaveOneRequiredFields() {
         user.setPassword("");
         ValidatableResponse responseCreateUser =
                 createUser.сreateUser(user)
-                        .assertThat().statusCode(SC_FORBIDDEN);;
+                        .assertThat().statusCode(SC_FORBIDDEN);
+        ;
 
         String expectedSuccess = "false";
         String actualSuccess = responseCreateUser.extract().path("success").toString();

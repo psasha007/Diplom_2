@@ -1,12 +1,22 @@
+import api.client.CreateOrdersAPI;
+import api.client.CreateUserAPI;
+import api.ingredients.Ingredients;
+import api.ingredients.IngredientsData;
+import api.orders.Orders;
+import api.user.UserGenerator;
 import io.qameta.allure.junit4.DisplayName;
 import io.restassured.response.ValidatableResponse;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import static org.apache.http.HttpStatus.*;
+
+import api.user.User;
 
 @DisplayName("Создание заказа")
 public class CreateOrdersTest {
@@ -27,12 +37,13 @@ public class CreateOrdersTest {
         ValidatableResponse responseCreateUser = createUser.сreateUser(user);
         accessToken = responseCreateUser.extract().path("accessToken").toString();
         ingredientList = new ArrayList<>();
-        for (IngredientsData ord: ingredients.getData()) {
+        for (IngredientsData ord : ingredients.getData()) {
             ingredientList.add(ord.get_id());
         }
     }
+
     @After
-    public void setDown(){
+    public void setDown() {
         createUser.deleteUser(accessToken);
     }
 
@@ -40,9 +51,9 @@ public class CreateOrdersTest {
     @DisplayName("Проверка - Создания заказа с авторизацией с ингредиентами")
     public void сreateOrdersWithAuthorizationTest() {
         ValidatableResponse responseCreateOrders =
-        createOrders
-                .сreateOrdersWithAuthorization(accessToken, new Orders(ingredientList))
-                .assertThat().statusCode(SC_OK);
+                createOrders
+                        .сreateOrdersWithAuthorization(accessToken, new Orders(ingredientList))
+                        .assertThat().statusCode(SC_OK);
 
         String expectedSuccess = "true";
         String actualSuccess = responseCreateOrders.extract().path("success").toString();
@@ -76,9 +87,9 @@ public class CreateOrdersTest {
     @DisplayName("Проверка - Создания заказа без авторизации с ингредиентами")
     public void сreateOrdersWithOutAuthorizationTest() {
         ValidatableResponse responseCreateOrders =
-        createOrders
-                .сreateOrdersWithOutAuthorization(new Orders(ingredientList))
-                .assertThat().statusCode(SC_OK);
+                createOrders
+                        .сreateOrdersWithOutAuthorization(new Orders(ingredientList))
+                        .assertThat().statusCode(SC_OK);
 
         String expectedSuccess = "true";
         String actualSuccess = responseCreateOrders.extract().path("success").toString();

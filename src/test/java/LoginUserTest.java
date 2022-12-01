@@ -1,9 +1,14 @@
+import api.client.CreateUserAPI;
+import api.user.Credentials;
+import api.user.User;
+import api.user.UserGenerator;
 import io.qameta.allure.junit4.DisplayName;
 import io.restassured.response.ValidatableResponse;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
 import static org.apache.http.HttpStatus.SC_OK;
 import static org.apache.http.HttpStatus.SC_UNAUTHORIZED;
 
@@ -22,7 +27,7 @@ public class LoginUserTest {
     }
 
     @After
-    public void setDown(){
+    public void setDown() {
         createUser.deleteUser(accessToken);
     }
 

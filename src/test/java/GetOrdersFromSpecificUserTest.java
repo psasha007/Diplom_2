@@ -1,9 +1,14 @@
+import api.client.CreateUserAPI;
+import api.client.GetOrdersFromSpecificUserAPI;
+import api.user.User;
+import api.user.UserGenerator;
 import io.qameta.allure.junit4.DisplayName;
 import io.restassured.response.ValidatableResponse;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
 import static org.apache.http.HttpStatus.*;
 
 @DisplayName("Получение заказов конкретного пользователя")
@@ -23,7 +28,7 @@ public class GetOrdersFromSpecificUserTest {
     }
 
     @After
-    public void setDown(){
+    public void setDown() {
         createUser.deleteUser(accessToken);
     }
 

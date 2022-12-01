@@ -1,14 +1,20 @@
+import api.client.CreateUserAPI;
+import api.client.GettingAndUpdatingUserInfoAPI;
+import api.user.User;
+import api.user.UserGenerator;
 import io.qameta.allure.junit4.DisplayName;
 import io.restassured.response.ValidatableResponse;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
 import static org.apache.http.HttpStatus.SC_OK;
 import static org.apache.http.HttpStatus.SC_UNAUTHORIZED;
 
 @DisplayName("Получение и обновление информации о пользователе")
 public class GettingAndUpdatingUserInfoTest {
+
     private User user;
     private CreateUserAPI createUser;
     private String accessToken = "default";
@@ -24,7 +30,7 @@ public class GettingAndUpdatingUserInfoTest {
     }
 
     @After
-    public void setDown(){
+    public void setDown() {
         createUser.deleteUser(accessToken);
     }
 
